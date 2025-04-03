@@ -26,7 +26,9 @@ public class Player extends Entity{
 	public void setDefault() {
 		entityX = 100;
 		entityY = 100;
-		entitySpeed = 4;
+		velocityX = 4;
+		velocityY = 4;
+		speed = 4;
 		direction = "up";
 	}
 	
@@ -51,22 +53,27 @@ public class Player extends Entity{
 		if(key.up == true)
 		{
 			direction = "up";
-			entityY -= entitySpeed;
+			if(velocityY == 0 && jumpAvailable == true)
+			{
+				velocityY = -gp.originalBlockSize;
+				jumpAvailable = false;
+			}
+			
 		}
-		else if(key.down == true)
-		{
-			direction = "down";
-			entityY += entitySpeed;
-		}
-		else if(key.left == true)
+//		if(key.down == true)
+//		{
+//			direction = "down";
+//			entityY += velocityY;
+//		}
+		if(key.left == true)
 		{
 			direction = "left";
-			entityX -= entitySpeed;
+			entityX -= velocityX;
 		}
-		else if(key.right == true)
+		if(key.right == true)
 		{
 			direction = "right";
-			entityX += entitySpeed;
+			entityX += velocityX;
 		}
 		
 		//Help in animating the character.. changes between the different images.
@@ -90,6 +97,26 @@ public class Player extends Entity{
 			
 		}
 		}
+		
+		//adding gravity to player
+		if(velocityY < gp.gravity.gravity)
+		{
+			//entityY += velocityY;
+			velocityY += 1;
+		}
+		if(velocityY + entityY < 385)
+		{
+			entityY += velocityY;
+		}
+		else
+		{
+			velocityY = 0;
+			jumpAvailable = true;
+		}
+		
+		
+		//System.out.println(velocityY);
+		
 	}
 	
 	public void drawPlayer(Graphics2D gr2)
@@ -143,7 +170,7 @@ public class Player extends Entity{
 		}
 		
 		//Draw the sprite on the screen
-		gr2.drawImage(image, entityX, entityY, gp.blockSize, gp.blockSize, null);
+		gr2.drawImage(image, (int)entityX, (int)entityY, gp.blockSize, gp.blockSize, null);
 		
 	}
 	

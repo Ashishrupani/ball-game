@@ -9,6 +9,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.JPanel;
 
 import Entity.Entity;
+import Entity.Gravity;
 import Entity.Player;
 import block.BlockManager;
 
@@ -24,10 +25,12 @@ public class GamePanel extends JPanel implements Runnable{
 	public int screenWidth = blockSize * maxScreenSizeX; // 768 pixels wide
 	public int screenHeight = blockSize * maxScreenSizeY; // 576 pixels height
 	
+	public Gravity gravity = new Gravity();
 	BlockManager blockMgr = new BlockManager(this);
 	Movement key = new Movement();
 	Thread gameThread;
 	Player player = new Player(this, key);
+	
 	
 	public GamePanel(){
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -76,6 +79,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public void update(){
 		//update player based on the keys pressed
 		player.updatePlayerMovement();
+		//adding gravity to player
 	}
 	
 	public void paintComponent(Graphics gr) {
