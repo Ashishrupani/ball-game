@@ -27,13 +27,17 @@ public class Player extends Entity{
 		entityX = 100;
 		entityY = 100;
 		entitySpeed = 4;
-		direction = "down";
+		direction = "up";
 	}
 	
 	public void getImage() {
 		
 		try {
-			test = ImageIO.read(getClass().getResourceAsStream("/images/up.png"));
+			up = ImageIO.read(getClass().getResourceAsStream("/character/up.png"));
+			left = ImageIO.read(getClass().getResourceAsStream("/character/left.png"));
+			right = ImageIO.read(getClass().getResourceAsStream("/character/right.png"));
+			down = ImageIO.read(getClass().getResourceAsStream("/character/down.png"));
+			
 			
 		}catch(IOException e){
 			e.printStackTrace();
@@ -42,21 +46,49 @@ public class Player extends Entity{
 	
 	public void updatePlayerMovement()
 	{
+		if(key.up == true || key.down == true || key.left == true || key.right == true) {
+		
 		if(key.up == true)
 		{
+			direction = "up";
 			entityY -= entitySpeed;
 		}
 		else if(key.down == true)
 		{
+			direction = "down";
 			entityY += entitySpeed;
 		}
 		else if(key.left == true)
 		{
+			direction = "left";
 			entityX -= entitySpeed;
 		}
 		else if(key.right == true)
 		{
+			direction = "right";
 			entityX += entitySpeed;
+		}
+		
+		//Help in animating the character.. changes between the different images.
+		spriteCounter++;
+		if(spriteCounter > 10)
+		{
+			if(spriteNum == 1) {    
+				spriteNum = 2;
+			}
+			else if(spriteNum == 2) { 
+				spriteNum = 3;
+			}
+			else if(spriteNum == 3) {
+				spriteNum = 4;
+			}
+			else if(spriteNum == 4) {
+				spriteNum = 1;
+			}
+			spriteCounter = 0;
+			//System.out.println(spriteNum);
+			
+		}
 		}
 	}
 	
@@ -65,8 +97,56 @@ public class Player extends Entity{
 //		gr2.setColor(Color.cyan);
 //		gr2.fillRoundRect(entityX, entityY, gp.blockSize, gp.blockSize, gp.blockSize, gp.blockSize);
 		
-		BufferedImage image = test;
+		BufferedImage image = null;
+		
+		switch(direction) {
+			case "right":
+				if(spriteNum == 1) {
+					image = up;
+				}
+				else if(spriteNum == 2)
+				{
+					image = right;
+				}
+				else if(spriteNum == 3)
+				{
+					image = down;
+				}
+				else if(spriteNum == 4)
+				{
+					image = left;
+				}
+				break;
+			
+			case "left":
+				if(spriteNum == 1) {
+					image = up;
+				}
+				else if(spriteNum == 2)
+				{
+					image = left;
+				
+				}
+				else if(spriteNum == 3)
+				{
+					image = down;
+				
+				}
+				else if(spriteNum == 4)
+				{
+					image = right;
+				}
+			break;
+			default:
+				image = up;
+				break;
+		}
+		
+		//Draw the sprite on the screen
 		gr2.drawImage(image, entityX, entityY, gp.blockSize, gp.blockSize, null);
 		
 	}
+	
+	
+	
 }

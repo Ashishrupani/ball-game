@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import Entity.Entity;
 import Entity.Player;
+import block.BlockManager;
 
 public class GamePanel extends JPanel implements Runnable{
 	
@@ -23,7 +24,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public int screenWidth = blockSize * maxScreenSizeX; // 768 pixels wide
 	public int screenHeight = blockSize * maxScreenSizeY; // 576 pixels height
 	
-	
+	BlockManager blockMgr = new BlockManager(this);
 	Movement key = new Movement();
 	Thread gameThread;
 	Player player = new Player(this, key);
@@ -81,10 +82,12 @@ public class GamePanel extends JPanel implements Runnable{
 		super.paintComponent(gr);
 		
 		Graphics2D gr2 = (Graphics2D)gr;
+		//Draw blocks
+		blockMgr.drawBlock(gr2);
+		//Draw player
 		player.drawPlayer(gr2);
-		gr.dispose();
 		
-		
+		gr2.dispose();
 	}
 	
 	
