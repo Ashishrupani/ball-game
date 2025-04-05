@@ -20,7 +20,7 @@ public class BlockManager {
 		this.gp = gp;
 		
 		block = new Block[10];
-		mapBlockNum = new int[gp.maxScreenSizeX][gp.maxScreenSizeY];
+		mapBlockNum = new int[gp.maxWorldX][gp.maxWorldY];
 		getBlock();
 		loadMap();
 	}
@@ -54,22 +54,23 @@ public class BlockManager {
 	public void loadMap() {
 		
 		try {
-			InputStream is = getClass().getResourceAsStream("/maps/testmap.txt");
+			InputStream is = getClass().getResourceAsStream("/maps/worldMap.txt");
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 			
 			int col = 0;
 			int row = 0;
 			
-			while(col < gp.maxScreenSizeX && row < gp.maxScreenSizeY) {
+			while(col < gp.maxWorldX && row < gp.maxWorldY) {
 			String line = br.readLine();
-			
-			while(col < gp.maxScreenSizeX) {
+				
+			while(col < gp.maxWorldX) {
 				String numbers[] = line.split(" ");
 				int num = Integer.parseInt(numbers[col]);
 				mapBlockNum[col][row] = num;
+				//System.out.println("COL: "+ col + "   "+ "ROW: " + row + "   " + "NUM: " + num);
 				col++;
 			}
-			if(col == gp.maxScreenSizeX)
+			if(col == gp.maxWorldX)
 			{
 				col = 0;
 				row++;
@@ -86,22 +87,33 @@ public class BlockManager {
 	public void drawBlock(Graphics2D gr2) {
 		
 		//gr2.drawImage(block[0].image, 0, 0, gp.blockSize, gp.blockSize, null);
-		int col = 0;
-		int row = 0;
-		int x = 0;
-		int y = 0;
+		int worldCol = 0;
+		int worldRow = 0;
 		
-		while(col < gp.maxScreenSizeX && row < gp.maxScreenSizeY) {
-			int blockNum = mapBlockNum[col][row];
-			gr2.drawImage(block[blockNum].image,x,y,gp.blockSize, gp.blockSize, null);
-			col++;
-			x += gp.blockSize;
+		while(worldCol < gp.maxWorldX && worldRow < gp.maxWorldY) {
+			int blockNum = mapBlockNum[worldCol][worldRow];
 			
-			if(col == gp.maxScreenSizeX) {
-				col = 0;
-				x = 0;
-				row++;
-				y += gp.blockSize;
+			int worldX = worldCol * gp.blockSize;
+			int worldY = worldRow * gp.blockSize;
+			int screenX = worldX - gp.player.entityX + gp.player.screenX;
+			int screenY = worldY - gp.player.entityY + gp.player.screenY;
+			
+			
+			
+			if( worldX + gp.blockSize > gp.player.entityX - gp.player.screenX &&
+				worldX - gp.blockSize < gp.player.entityX + gp.player.screenX &&
+				worldY + gp.blockSize > gp.player.entityY - gp.player.screenY &&
+				worldY - gp.blockSize < gp.player.entityY + gp.player.screenY) 
+			
+			{
+			gr2.drawImage(block[blockNum].image, screenX, screenY,gp.blockSize, gp.blockSize, null);
+			}
+			worldCol++;
+			
+			if(worldCol == gp.maxWorldX) {
+				worldCol = 0;
+				worldRow++;
+				
 			}
 		}
 		

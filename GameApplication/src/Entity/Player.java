@@ -15,21 +15,33 @@ public class Player extends Entity{
 	GamePanel gp;  //game panel
 	Movement key;  //movement handler
 	
+	public int startPosition;
+	
+	//Screen 
+	public int screenX;
+	public int screenY;
+	
+	
 	public Player(GamePanel gp, Movement key)
 	{
 		this.gp = gp;
 		this.key = key;
+		
+		screenX = gp.screenWidth/2 - (gp.blockSize/2);
+		screenY = gp.screenHeight/2 - (gp.blockSize/2);
+		
 		setDefault();
 		getImage();
 	}
 	
 	public void setDefault() {
-		entityX = 100;
-		entityY = 100;
+		entityX = 8 * gp.blockSize;
+		entityY = 3 * gp.blockSize;
 		velocityX = 4;
 		velocityY = 4;
 		speed = 4;
 		direction = "up";
+		startPosition = entityX;
 	}
 	
 	public void getImage() {
@@ -102,9 +114,9 @@ public class Player extends Entity{
 		if(velocityY < gp.gravity.gravity)
 		{
 			//entityY += velocityY;
-			velocityY += 1;
+			velocityY += gp.gravity.gravityMultiplier;
 		}
-		if(velocityY + entityY < 385)
+		if(velocityY + entityY < 430)
 		{
 			entityY += velocityY;
 		}
@@ -170,7 +182,7 @@ public class Player extends Entity{
 		}
 		
 		//Draw the sprite on the screen
-		gr2.drawImage(image, (int)entityX, (int)entityY, gp.blockSize, gp.blockSize, null);
+		gr2.drawImage(image, (int)screenX, (int)screenY, gp.blockSize, gp.blockSize, null);
 		
 	}
 	

@@ -25,11 +25,18 @@ public class GamePanel extends JPanel implements Runnable{
 	public int screenWidth = blockSize * maxScreenSizeX; // 768 pixels wide
 	public int screenHeight = blockSize * maxScreenSizeY; // 576 pixels height
 	
+	//World Settings
+	public int maxWorldX = 64;
+	public int maxWorldY = 14;
+	public int maxWorldWidth = blockSize * maxWorldX;
+	public int maxWorldHeight = blockSize * maxWorldY;
+	
+	
 	public Gravity gravity = new Gravity();
 	BlockManager blockMgr = new BlockManager(this);
 	Movement key = new Movement();
 	Thread gameThread;
-	Player player = new Player(this, key);
+	public Player player = new Player(this, key);
 	
 	
 	public GamePanel(){
