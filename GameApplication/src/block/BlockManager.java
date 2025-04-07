@@ -15,7 +15,7 @@ public class BlockManager {
 	GamePanel gp;
 	Block[] block;
 	int mapBlockNum[][];
-	
+		
 	public BlockManager(GamePanel gp) {
 		this.gp = gp;
 		
@@ -84,7 +84,7 @@ public class BlockManager {
 	}
 	
 	
-	public void drawBlock(Graphics2D gr2) {
+	public void drawBlock(Graphics2D gr2, int lvlOffset) {
 		
 		//gr2.drawImage(block[0].image, 0, 0, gp.blockSize, gp.blockSize, null);
 		int worldCol = 0;
@@ -95,19 +95,19 @@ public class BlockManager {
 			
 			int worldX = worldCol * gp.blockSize;
 			int worldY = worldRow * gp.blockSize;
-			int screenX = worldX - gp.player.entityX + gp.player.screenX;
-			int screenY = worldY - gp.player.entityY + gp.player.screenY;
+//			int screenX = worldX - gp.player.entityX + gp.player.screenX;
+//			int screenY = worldY - gp.player.entityY + gp.player.screenY;
 			
 			
-			
-			if( worldX + gp.blockSize > gp.player.entityX - gp.player.screenX &&
-				worldX - gp.blockSize < gp.player.entityX + gp.player.screenX &&
-				worldY + gp.blockSize > gp.player.entityY - gp.player.screenY &&
-				worldY - gp.blockSize < gp.player.entityY + gp.player.screenY) 
-			
-			{
-			gr2.drawImage(block[blockNum].image, screenX, screenY,gp.blockSize, gp.blockSize, null);
-			}
+//			if( worldX + gp.blockSize > gp.player.entityX - gp.player.screenX &&
+//				worldX - gp.blockSize < gp.player.entityX + gp.player.screenX &&
+//				worldY + gp.blockSize > gp.player.entityY - gp.player.screenY &&
+//				worldY - gp.blockSize < gp.player.entityY + gp.player.screenY) 
+//			
+//			{
+				
+				gr2.drawImage(block[blockNum].image, worldX - lvlOffset, worldY,gp.blockSize, gp.blockSize, null);
+//			}
 			worldCol++;
 			
 			if(worldCol == gp.maxWorldX) {

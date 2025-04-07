@@ -27,9 +27,20 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	//World Settings
 	public int maxWorldX = 64;
-	public int maxWorldY = 14;
+	public int maxWorldY = 12;
 	public int maxWorldWidth = blockSize * maxWorldX;
 	public int maxWorldHeight = blockSize * maxWorldY;
+	
+	
+	//Screen Settings
+	//Screen Settings
+			public int screenLeftMost = 0;
+			public int screenRightMost = maxWorldWidth;
+			public int lvlOffset;
+			public int leftBorder = (int) (0.1 * screenWidth);
+			public int rightBorder = (int) (0.75 * screenWidth);
+			public int maxTileOffset = maxWorldX - maxScreenSizeX;
+			public int maxLvlOffset = maxTileOffset * blockSize;
 	
 	
 	public Gravity gravity = new Gravity();
@@ -52,6 +63,30 @@ public class GamePanel extends JPanel implements Runnable{
 	public void startGameThread() {
 		gameThread = new Thread(this);
 		gameThread.start();
+	}
+	
+	public void checkCloseToEdges() {
+		int playerX = (int) player.entityX;
+		int diff = playerX - lvlOffset;
+		
+		if(diff > rightBorder) {
+			lvlOffset += diff - rightBorder;
+		}
+		else if(diff < leftBorder)
+		{
+			lvlOffset += diff - leftBorder;
+		}
+		
+		if(lvlOffset > maxLvlOffset)
+		{
+			lvlOffset = maxLvlOffset;
+		}
+		else if(lvlOffset < 0)
+		{
+			lvlOffset = 0;
+		}
+		
+		System.out.println("lvlOff: " + lvlOffset);
 	}
 
 	
@@ -85,18 +120,21 @@ public class GamePanel extends JPanel implements Runnable{
 
 	public void update(){
 		//update player based on the keys pressed
+		checkCloseToEdges();
 		player.updatePlayerMovement();
 		//adding gravity to player
 	}
 	
+
+
 	public void paintComponent(Graphics gr) {
 		super.paintComponent(gr);
 		
 		Graphics2D gr2 = (Graphics2D)gr;
 		//Draw blocks
-		blockMgr.drawBlock(gr2);
+		blockMgr.drawBlock(gr2, lvlOffset);
 		//Draw player
-		player.drawPlayer(gr2);
+		player.drawPlayer(gr2, lvlOffset);
 		
 		gr2.dispose();
 	}

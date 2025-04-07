@@ -11,6 +11,7 @@ public class Main {
 		
 		//Window setup
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.setSize(panel.screenWidth, panel.screenHeight);
 		window.setResizable(false);
 		window.setTitle("Ball Game");
 		//Adding GamePanel
@@ -19,8 +20,6 @@ public class Main {
 		//Setting the window to the center of the screen
 		window.setLocationRelativeTo(null);
 		window.setVisible(true);
-		
-		
 		
 		
 		

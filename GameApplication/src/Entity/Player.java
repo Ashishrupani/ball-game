@@ -2,6 +2,7 @@ package Entity;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -17,31 +18,28 @@ public class Player extends Entity{
 	
 	public int startPosition;
 	
-	//Screen 
-	public int screenX;
-	public int screenY;
-	
 	
 	public Player(GamePanel gp, Movement key)
 	{
 		this.gp = gp;
 		this.key = key;
 		
-		screenX = gp.screenWidth/2 - (gp.blockSize/2);
-		screenY = gp.screenHeight/2 - (gp.blockSize/2);
+		//screenX = gp.screenWidth/2 - (gp.blockSize/2);
+		//screenY = gp.screenHeight/2 - (gp.blockSize/2);
 		
 		setDefault();
 		getImage();
 	}
 	
 	public void setDefault() {
-		entityX = 8 * gp.blockSize;
+		entityX = 0;
 		entityY = 3 * gp.blockSize;
 		velocityX = 4;
 		velocityY = 4;
 		speed = 4;
 		direction = "up";
 		startPosition = entityX;
+		
 	}
 	
 	public void getImage() {
@@ -60,7 +58,7 @@ public class Player extends Entity{
 	
 	public void updatePlayerMovement()
 	{
-		if(key.up == true || key.down == true || key.left == true || key.right == true) {
+		if((key.up == true || key.down == true || key.left == true || key.right == true)) {
 		
 		if(key.up == true)
 		{
@@ -131,7 +129,7 @@ public class Player extends Entity{
 		
 	}
 	
-	public void drawPlayer(Graphics2D gr2)
+	public void drawPlayer(Graphics2D gr2, int lvlOffset)
 	{
 //		gr2.setColor(Color.cyan);
 //		gr2.fillRoundRect(entityX, entityY, gp.blockSize, gp.blockSize, gp.blockSize, gp.blockSize);
@@ -182,7 +180,7 @@ public class Player extends Entity{
 		}
 		
 		//Draw the sprite on the screen
-		gr2.drawImage(image, (int)screenX, (int)screenY, gp.blockSize, gp.blockSize, null);
+		gr2.drawImage(image, (int)entityX - lvlOffset, (int)entityY , gp.blockSize, gp.blockSize, null);
 		
 	}
 	
